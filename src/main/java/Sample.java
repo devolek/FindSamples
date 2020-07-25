@@ -1,12 +1,10 @@
-public class Sample
-{
+public class Sample {
     private String type;
     private String art;
     private String instance;
     private double pH;
 
-    public Sample(String art, String instance, String type)
-    {
+    public Sample(String art, String instance, String type) {
         this.art = art;
         this.instance = instance;
         this.type = type;
@@ -32,8 +30,7 @@ public class Sample
         this.type = type;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return type + " - " + art + " - " + instance;
     }
 }
