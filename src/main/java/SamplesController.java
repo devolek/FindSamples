@@ -45,6 +45,9 @@ public class SamplesController {
                 for (Sheet sheet : workbook) {
                     List<Sample> samples = new ArrayList<>();
                     for (int i = sheet.getFirstRowNum(); i < sheet.getLastRowNum(); i++) {
+                        if (sheet.getSheetName().contains("орг")){
+                            continue;
+                        }
                         Row row = sheet.getRow(i);
                         if (row == null) {
                             continue;
@@ -111,7 +114,7 @@ public class SamplesController {
     public static void printSamples(Company company, String code) throws FileNotFoundException {
         StringBuilder builder = new StringBuilder();
         String[] codes = code.split(",");
-        List<Type> types = company.getTypes();
+        List<Type> types = findSamples(company, codes).getTypes();
         for (Type type : types) {
             builder.append(type.getName());
             builder.append("\n");
@@ -122,13 +125,9 @@ public class SamplesController {
                 builder.append("\n");
                 List<Sample> samples = art.getSamples();
                 for (Sample sample : samples) {
-                    for (String cod : codes) {
-                        if (sample.getInstance().contains(cod)) {
-                            builder.append("\t\t");
-                            builder.append(sample.getInstance());
-                            builder.append("\n");
-                        }
-                    }
+                    builder.append("\t\t");
+                    builder.append(sample.getInstance());
+                    builder.append("\n");
                 }
             }
         }
@@ -137,5 +136,34 @@ public class SamplesController {
         writer.write(builder.toString());
         writer.flush();
         writer.close();
+    }
+
+    private static Company findSamples(Company company, String[] codes){
+        Company newCompany = new Company();
+        List<Type> types = company.getTypes();
+        List<Type> newTypes = new ArrayList<>();
+        for (Type type : types){
+            List<Art> newArts = new ArrayList<>();
+            List<Art> arts = type.getArts();
+            for (Art art : arts){
+                List<Sample> newSamples = new ArrayList<>();
+                List<Sample> samples = art.getSamples();
+                for (Sample sample : samples){
+                    for (String cod : codes) {
+                        if (sample.getInstance().contains(cod)) {
+                            newSamples.add(sample);
+                        }
+                    }
+                }
+                if (newSamples.size() > 0){
+                    newArts.add(new Art(art.getName(), newSamples));
+                }
+            }
+            if (newArts.size() > 0) {
+                newTypes.add(new Type(type.getName(), newArts));
+            }
+        }
+        newCompany.setTypes(newTypes);
+        return newCompany;
     }
 }

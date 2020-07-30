@@ -3,7 +3,7 @@ import java.util.*;
 
 
 public class Main {
-    private final static String DIRECTORY = "C:\\Users\\Katerina\\Desktop\\folder";
+    private final static String DIRECTORY = "C:\\Users\\Valet\\Desktop\\журналы";
 
     public static void main(String[] args) throws IOException {
 
