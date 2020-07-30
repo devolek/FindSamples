@@ -1,3 +1,5 @@
+import model.Company;
+
 import java.io.IOException;
 import java.util.*;
 

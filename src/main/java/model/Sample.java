@@ -1,3 +1,5 @@
+package model;
+
 public class Sample {
     private String type;
     private String art;
